@@ -11,7 +11,7 @@ namespace AngularWebAPI.Models
     {
         public int EmpoyeeId { get; set; }
         public string EmployeeName { get; set; }
-        public byte[] Department { get; set; }
+        public string Department { get; set; }
         public DateTime? DateOfJoin { get; set; }
         public string PhotoFileName { get; set; }
     }

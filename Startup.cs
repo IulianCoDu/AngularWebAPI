@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Configuration;
+using AngularWebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AngularWebAPI
 {
@@ -19,7 +22,7 @@ namespace AngularWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Enable CORS
+            //Enable CORS (might not be needed)
             services.AddCors(
                 c =>
                 {
@@ -29,6 +32,10 @@ namespace AngularWebAPI
             // JSON Serializer as default
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson
                 (options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            //Use database connection from settings json
+            services.AddDbContext<EmpoyeeDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("EmployeeAppCon")));
 
             services.AddControllers();
         }

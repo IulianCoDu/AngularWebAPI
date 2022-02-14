@@ -35,10 +35,6 @@ namespace AngularWebAPI.Models
         {
             modelBuilder.Entity<Department>(entity =>
             {
-                entity.HasNoKey();
-
-                entity.Property(e => e.DepartmentId).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.DepartmentName)
                     .HasMaxLength(500)
                     .IsUnicode(false);
@@ -46,17 +42,17 @@ namespace AngularWebAPI.Models
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.EmpoyeeId);
 
                 entity.Property(e => e.DateOfJoin).HasColumnType("date");
 
-                entity.Property(e => e.Department).HasMaxLength(500);
+                entity.Property(e => e.Department)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.EmployeeName)
                     .HasMaxLength(500)
                     .IsUnicode(false);
-
-                entity.Property(e => e.EmpoyeeId).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.PhotoFileName)
                     .HasMaxLength(500)
