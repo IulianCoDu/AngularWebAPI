@@ -23,15 +23,17 @@ namespace AngularWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //Enable CORS (might not be needed)
-            services.AddCors(
-                c =>
-                {
-                    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-                });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
 
             // JSON Serializer as default
-            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson
-                (options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson
+                    (options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             //Use database connection from settings json
             services.AddDbContext<EmpoyeeDBContext>(options =>
