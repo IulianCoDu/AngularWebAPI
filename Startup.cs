@@ -23,17 +23,15 @@ namespace AngularWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //Enable CORS (might not be needed)
-            services.AddCors(options =>
+            services.AddCors(c =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+                c.AddPolicy("AllowOrigin",
+                    options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
             // JSON Serializer as default
-            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson
-                    (options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             //Use database connection from settings json
             services.AddDbContext<EmpoyeeDBContext>(options =>
@@ -45,7 +43,9 @@ namespace AngularWebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Enable CORS
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
